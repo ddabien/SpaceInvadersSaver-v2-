@@ -31,6 +31,7 @@ jobs:
 
       - name: Build (single-arch)
         run: |
+          set -e
           mkdir -p build/${{ matrix.arch }}
 
           swiftc \
@@ -67,6 +68,7 @@ jobs:
 
       - name: Prepare .saver bundle from repo template
         run: |
+          set -e
           rm -rf dist
           mkdir -p dist
           cp -R SpaceInvadersScreensaver.saver dist/SpaceInvadersScreensaver.saver
@@ -77,6 +79,7 @@ jobs:
 
       - name: Create universal binary (lipo)
         run: |
+          set -e
           lipo -create \
             build/screensaver-arm64/SpaceInvadersScreensaver \
             build/screensaver-x86_64/SpaceInvadersScreensaver \
@@ -87,6 +90,7 @@ jobs:
 
       - name: Verify expected files exist
         run: |
+          set -e
           test -f dist/SpaceInvadersScreensaver.saver/Contents/Info.plist
           test -f dist/SpaceInvadersScreensaver.saver/Contents/Resources/index.html
           test -f dist/SpaceInvadersScreensaver.saver/Contents/Resources/main.js
@@ -94,6 +98,7 @@ jobs:
 
       - name: Create ZIP
         run: |
+          set -e
           cd dist
           zip -r ../SpaceInvadersScreensaver.zip SpaceInvadersScreensaver.saver
 
