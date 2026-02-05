@@ -326,17 +326,46 @@
 
   function loop(ts){ if(!loop.prev) loop.prev=ts; const dt=Math.min(0.05,(ts-loop.prev)/1000); loop.prev=ts; update(dt); render(); requestAnimationFrame(loop); }
 
-  function loadImage(name){ return new Promise((res,rej)=>{ const i=new Image(); i.onload=()=>res(i); i.onerror=rej; i.src='assets/'+name; }); }
-  Promise.all([
-    loadImage('Ship.gif').then(i=>images.Ship=i),
-    loadImage('InvaderA.gif').then(i=>images.InvaderA=i),
-    loadImage('InvaderB.gif').then(i=>images.InvaderB=i),
-    loadImage('GameOver.gif').then(i=>images.GameOver=i),
-    loadImage('Explosion.gif').then(i=>images.Explosion=i).catch(()=>{}) // opcional
-  ]).then(()=>{
-    try{ if(SOUND_ENABLED){ audio=makeAudio(); audio&&audio.resume&&audio.resume(); } }catch(e){}
-    resize(); resetGame(); requestAnimationFrame(loop);
-  }).catch(err=>{
-    console.error('Error cargando imágenes',err); resize(); ctx.fillStyle='#fff'; ctx.font=(20*DPR)+'px monospace'; ctx.fillText('Error cargando imágenes', 40*DPR, 60*DPR);
+function loadImage(name) {
+    return new Promise((res, rej) => {
+      const i = new Image();
+      i.onload = () => res(i);
+      i.onerror = (e) => rej(new Error("No cargó: assets/" + name));
+      i.src = 'assets/' + name;
+    });
+  }
+
+  Promise.allSettled([
+    loadImage('Ship.gif').then(i => images.Ship = i),
+    loadImage('InvaderA.gif').then(i => images.InvaderA = i),
+    loadImage('InvaderB.gif').then(i => images.InvaderB = i),
+    loadImage('GameOver.gif').then(i => images.GameOver = i),
+    loadImage('Explosion.gif').then(i => images.Explosion = i) // opcional, si falta no pasa nada
+  ]).then((results) => {
+
+    // Log de qué falló (si algo falló)
+    const failed = results.filter(r => r.status === 'rejected').map(r => String(r.reason));
+    if (failed.length) console.warn("Sprites que no cargaron:", failed);
+
+    // Fallbacks mínimos para evitar “pantalla negra” si falta algo clave
+    if (!images.Ship || !images.InvaderA || !images.InvaderB) {
+      console.error("Faltan sprites clave (Ship/InvaderA/InvaderB). Reviso rutas: assets/...");
+      resize();
+      ctx.fillStyle = '#fff';
+      ctx.font = (18 * DPR) + 'px monospace';
+      ctx.fillText('Faltan sprites en assets/.', 30 * DPR, 60 * DPR);
+      return;
+    }
+
+    try {
+      if (SOUND_ENABLED) {
+        audio = makeAudio();
+        audio && audio.resume && audio.resume();
+      }
+    } catch (e) {}
+
+    resize();
+    resetGame();
+    requestAnimationFrame(loop);
   });
 })();
