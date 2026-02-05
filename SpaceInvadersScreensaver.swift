@@ -3,25 +3,27 @@ import ScreenSaver
 import WebKit
 
 @available(macOS 13.0, *)
-class SpaceInvadersScreensaverView: ScreenSaverView {
+final class SpaceInvadersScreensaverView: ScreenSaverView, WKNavigationDelegate {
+
     private var webView: WKWebView!
 
     override init?(frame: NSRect, isPreview: Bool) {
         super.init(frame: frame, isPreview: isPreview)
 
-        // Configuración de WebKit para macOS 13+
         let config = WKWebViewConfiguration()
-        let preferences = WKWebpagePreferences()
-        preferences.allowsContentJavaScript = true
-        config.defaultWebpagePreferences = preferences
+        let webpagePrefs = WKWebpagePreferences()
+        webpagePrefs.allowsContentJavaScript = true
+        config.defaultWebpagePreferences = webpagePrefs
 
-        // Permitir acceso a archivos locales (requerido para macOS 13+)
-        // Nota: esta key es privada, pero suele usarse para este caso.
+        // Ayuda mucho cuando se carga HTML local con assets locales en .saver
         config.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
+        config.setValue(true, forKey: "allowUniversalAccessFromFileURLs")
 
         webView = WKWebView(frame: bounds, configuration: config)
         webView.autoresizingMask = [.width, .height]
         webView.underPageBackgroundColor = .black
+        webView.navigationDelegate = self
+
         addSubview(webView)
 
         loadGame()
@@ -32,32 +34,32 @@ class SpaceInvadersScreensaverView: ScreenSaverView {
     }
 
     private func loadGame() {
-        // ✅ Bundle(for:) NO es Optional -> no va con "guard let"
         let bundle = Bundle(for: type(of: self))
 
-        guard let htmlPath = bundle.path(forResource: "index", ofType: "html") else {
-            NSLog("SpaceInvaders: No se encontró index.html en el bundle. Bundle path: \(bundle.bundlePath)")
+        guard let htmlURL = bundle.url(forResource: "index", withExtension: "html") else {
+            NSLog("SpaceInvaders: No se encontró index.html en Resources. Bundle: \(bundle.bundlePath)")
             return
         }
 
-        let htmlURL = URL(fileURLWithPath: htmlPath)
-        let resourcesURL = htmlURL.deletingLastPathComponent()
+        guard let resourcesURL = bundle.resourceURL else {
+            NSLog("SpaceInvaders: bundle.resourceURL es nil. Bundle: \(bundle.bundlePath)")
+            return
+        }
 
-        // Cargar HTML con acceso a recursos locales
-        webView.loadFileURL(htmlURL, allowingReadAccessTo: resourcesURL)
+        do {
+            let html = try String(contentsOf: htmlURL, encoding: .utf8)
+            // ✅ Clave: baseURL = Resources. Así 'assets/...' resuelve dentro de Contents/Resources/
+            webView.loadHTMLString(html, baseURL: resourcesURL)
+        } catch {
+            NSLog("SpaceInvaders: Error leyendo index.html: \(error)")
+        }
     }
 
+    // Fondo negro (por las dudas)
     override func draw(_ rect: NSRect) {
         NSColor.black.setFill()
         rect.fill()
     }
-
-    override func animateOneFrame() {
-        // El WebView maneja su propia animación
-        super.animateOneFrame()
-    }
-
-    override var hasConfigureSheet: Bool { false }
 
     override func startAnimation() {
         super.startAnimation()
@@ -66,7 +68,21 @@ class SpaceInvadersScreensaverView: ScreenSaverView {
 
     override func stopAnimation() {
         super.stopAnimation()
-        // Si querés “cortar” audio/estado, recargar ayuda.
+        // No es obligatorio, pero ayuda a “resetear” JS cuando se apaga/enciende
         webView.evaluateJavaScript("window.location.reload()", completionHandler: nil)
     }
+
+    override var hasConfigureSheet: Bool { false }
+
+    // MARK: - WKNavigationDelegate (logs útiles)
+
+    func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+        NSLog("SpaceInvaders: WebView didFail navigation: \(error)")
+    }
+
+    func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+        NSLog("SpaceInvaders: WebView didFailProvisionalNavigation: \(error)")
+    }
+}
+
 }
