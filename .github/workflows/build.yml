@@ -72,9 +72,7 @@ jobs:
           cp -R SpaceInvadersScreensaver.saver dist/SpaceInvadersScreensaver.saver
           mkdir -p dist/SpaceInvadersScreensaver.saver/Contents/MacOS
 
-          echo "Bundle contents:"
-          ls -la dist/SpaceInvadersScreensaver.saver/Contents
-          echo "Resources contents:"
+          echo "Resources:"
           ls -la dist/SpaceInvadersScreensaver.saver/Contents/Resources || true
 
       - name: Create universal binary (lipo)
@@ -91,7 +89,8 @@ jobs:
         run: |
           test -f dist/SpaceInvadersScreensaver.saver/Contents/Info.plist
           test -f dist/SpaceInvadersScreensaver.saver/Contents/Resources/index.html
-          echo "OK: Info.plist + index.html presentes"
+          test -f dist/SpaceInvadersScreensaver.saver/Contents/Resources/main.js
+          echo "OK: Info.plist + index.html + main.js presentes"
 
       - name: Create ZIP
         run: |
