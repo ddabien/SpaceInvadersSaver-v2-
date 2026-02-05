@@ -1,0 +1,435 @@
+╔═══════════════════════════════════════════════════════════════╗
+║  INSTRUCCIONES COMPLETAS - COMPILACIÓN ONLINE                 ║
+║  Space Invaders Screensaver para macOS 13+                    ║
+╚═══════════════════════════════════════════════════════════════╝
+
+✅ Compatible con:
+   • macOS 13.0 Ventura
+   • macOS 14.0 Sonoma  
+   • macOS 15.0 Sequoia
+   • macOS 16.0+ Tahoe y futuras versiones
+   • Intel (x86_64) y Apple Silicon (ARM64)
+
+⏱️  Tiempo total: 5-7 minutos
+💰 Costo: GRATIS (GitHub Actions 2000 min/mes gratis)
+
+═══════════════════════════════════════════════════════════════
+
+⚠️  ANTES DE EMPEZAR - MUY IMPORTANTE ⚠️
+
+Verificá que tengas estos archivos:
+
+✓ github-workflows/build.yml       ← CRÍTICO
+✓ SpaceInvadersScreensaver.swift
+✓ SpaceInvadersScreensaver.saver/  ← carpeta completa
+✓ COMO_CREAR_GITHUB_FOLDER.txt
+✓ README.md
+✓ Este archivo
+
+Si falta alguno, descargá de nuevo el paquete completo.
+
+═══════════════════════════════════════════════════════════════
+
+PASO 1: CREAR CUENTA EN GITHUB
+═══════════════════════════════════════════════════════════════
+
+1. Abrí tu navegador (Safari, Chrome, Firefox)
+
+2. Ir a: https://github.com/signup
+
+3. Ingresá tu email
+   → Click "Continue"
+
+4. Creá una contraseña segura (mínimo 8 caracteres)
+   → Click "Continue"
+
+5. Elegí un username (puede ser cualquiera)
+   → Click "Continue"
+
+6. Decidí si querés recibir emails de GitHub
+   → Click "Continue"
+
+7. Resolvé el puzzle/captcha para verificar que sos humano
+
+8. GitHub te envía un código por email
+   → Revisá tu email
+   → Ingresá el código de 6 dígitos
+   → Click "Continue"
+
+9. GitHub puede preguntarte sobre tu perfil
+   → Podés saltear (Skip) estas preguntas
+
+10. ¡Listo! Ya tenés cuenta en GitHub
+
+═══════════════════════════════════════════════════════════════
+
+PASO 2: CREAR TU PRIMER REPOSITORIO
+═══════════════════════════════════════════════════════════════
+
+1. Una vez que estés en GitHub, vas a ver tu dashboard
+
+2. Arriba a la derecha hay un botón verde "New" o un "+"
+   → Click ahí
+   → Seleccioná "New repository"
+
+3. Completá el formulario:
+
+   Repository name: spaceinvaders-screensaver
+   (puede ser otro nombre si querés)
+
+   Description (opcional): 
+   Space Invaders Screensaver by dr pendejoloco
+
+   ⚠️  MUY IMPORTANTE:
+   → Seleccioná "Public" (NO Private)
+   → GitHub Actions gratis solo funciona en repos públicos
+
+   ☑ Marcá "Add a README file"
+   (esto inicializa el repo)
+
+4. Click en el botón verde "Create repository"
+
+5. ¡Listo! Ya tenés tu repositorio
+
+═══════════════════════════════════════════════════════════════
+
+PASO 3: SUBIR LOS ARCHIVOS DEL SCREENSAVER
+═══════════════════════════════════════════════════════════════
+
+1. En tu repositorio nuevo, vas a ver varios botones arriba
+
+2. Click en "Add file" (o el botón "<> Code")
+   → Seleccioná "Upload files"
+
+3. Vas a ver una página que dice "Drag files here"
+
+4. Abrí Finder y navegá a la carpeta:
+   SpaceInvaders_LISTO_PARA_SUBIR/
+
+5. Seleccioná TODOS los archivos y carpetas:
+   → github-workflows/
+   → SpaceInvadersScreensaver.swift
+   → SpaceInvadersScreensaver.saver/
+   → Todos los archivos .txt y .md
+
+6. Arrastralos a la ventana de GitHub
+   O click en "choose your files" y seleccionalos
+
+7. Esperá que se suban todos (va a mostrar una barra de progreso)
+
+8. Cuando termine, va a mostrar la lista de archivos
+
+9. Abajo donde dice "Commit changes"
+   → Podés dejar el mensaje por defecto
+   → Click "Commit changes" (botón verde)
+
+10. ¡Los archivos están subidos!
+
+═══════════════════════════════════════════════════════════════
+
+PASO 4: CREAR LA CARPETA .github/workflows/
+═══════════════════════════════════════════════════════════════
+
+⚠️  ESTE PASO ES CRÍTICO - SIN ESTO NO FUNCIONA ⚠️
+
+El archivo build.yml DEBE estar en .github/workflows/build.yml
+
+Como las carpetas con punto son ocultas, te lo incluí en
+github-workflows/ - ahora tenés que crear la estructura correcta.
+
+OPCIÓN FÁCIL (hacer en GitHub):
+
+1. En tu repositorio, click en "Add file"
+   → Seleccioná "Create new file"
+
+2. En el campo del nombre del archivo escribí EXACTAMENTE:
+   .github/workflows/build.yml
+
+   ⚠️  Incluí el punto al principio
+   ⚠️  GitHub va a crear las carpetas automáticamente
+
+3. Ahora tenés que copiar el contenido del archivo
+
+4. Abrí en otra pestaña tu repositorio
+   → Click en la carpeta github-workflows
+   → Click en build.yml
+   → Click en el botón "Raw" (arriba a la derecha)
+   → Seleccionar todo (Cmd+A) y copiar (Cmd+C)
+
+5. Volvé a la pestaña donde estás creando el archivo
+   → Pegá el contenido (Cmd+V)
+
+6. Scroll abajo
+   → Click "Commit new file" (botón verde)
+
+7. ¡Listo! Ya tenés .github/workflows/build.yml
+
+═══════════════════════════════════════════════════════════════
+
+PASO 5: VERIFICAR QUE TODO ESTÉ BIEN
+═══════════════════════════════════════════════════════════════
+
+1. En tu repositorio, deberías ver:
+   ✓ .github (carpeta)
+   ✓ github-workflows (carpeta - ya no necesaria, podés borrarla)
+   ✓ SpaceInvadersScreensaver.saver (carpeta)
+   ✓ SpaceInvadersScreensaver.swift
+   ✓ Varios archivos .txt y .md
+
+2. Click en .github
+   → Deberías ver workflows/
+   → Click en workflows
+   → Deberías ver build.yml
+
+3. Si todo está, ¡seguí al próximo paso!
+
+═══════════════════════════════════════════════════════════════
+
+PASO 6: ACTIVAR Y EJECUTAR GITHUB ACTIONS
+═══════════════════════════════════════════════════════════════
+
+1. En tu repositorio, arriba vas a ver varias pestañas:
+   Code, Issues, Pull requests, Actions, etc.
+
+2. Click en la pestaña "Actions"
+
+3. Si dice "Workflows are disabled" o algo similar:
+   → Click en el botón verde que dice:
+     "I understand my workflows, go ahead and enable them"
+
+4. Ahora deberías ver en la columna izquierda:
+   "Build macOS Screensaver"
+   
+   Si NO lo ves, volvé al Paso 4 - falta .github/workflows/build.yml
+
+5. Click en "Build macOS Screensaver"
+
+6. A la derecha vas a ver un botón que dice "Run workflow"
+   → Click en "Run workflow"
+
+7. Sale un menú desplegable pequeño
+   → Click de nuevo en "Run workflow" (botón verde)
+
+8. ¡Arrancó la compilación!
+   
+   Vas a ver un item nuevo en la lista que dice:
+   "Build macOS Screensaver"
+   
+   Con un icono: 🟡 (amarillo circulando) = compilando
+
+═══════════════════════════════════════════════════════════════
+
+PASO 7: ESPERAR LA COMPILACIÓN
+═══════════════════════════════════════════════════════════════
+
+Ahora GitHub está:
+
+1. Iniciando un Mac virtual en la nube
+2. Instalando Xcode 15
+3. Compilando tu screensaver para Intel y Apple Silicon
+4. Creando el archivo .saver
+5. Empaquetándolo en un ZIP
+
+Este proceso toma 2-3 minutos.
+
+Mientras tanto, podés:
+☕ Tomar un café
+🍪 Comer algo
+📱 Revisar tu teléfono
+🎮 Pensar en Space Invaders
+
+Vas a ver cambios en el ícono:
+🟡 Amarillo = compilando (espera)
+✅ Verde = ¡éxito!
+❌ Rojo = error (ver troubleshooting abajo)
+
+═══════════════════════════════════════════════════════════════
+
+PASO 8: DESCARGAR EL SCREENSAVER COMPILADO
+═══════════════════════════════════════════════════════════════
+
+1. Cuando veas el ✅ verde:
+   → Click en el nombre del workflow
+     (donde dice "Build macOS Screensaver")
+
+2. Se abre una página con detalles de la compilación
+
+3. Scroll hasta el final de la página
+
+4. Vas a ver una sección que dice "Artifacts"
+
+5. Ahí aparece: "SpaceInvadersScreensaver"
+   → Click ahí
+
+6. Se descarga un archivo ZIP
+   (SpaceInvadersScreensaver.zip)
+
+7. Buscalo en tu carpeta de Descargas
+
+8. Doble click para descomprimir
+
+9. Vas a ver: SpaceInvadersScreensaver.saver
+
+¡ESE ES TU SCREENSAVER COMPILADO! 🎉
+
+═══════════════════════════════════════════════════════════════
+
+PASO 9: INSTALAR EL SCREENSAVER
+═══════════════════════════════════════════════════════════════
+
+1. Doble click en SpaceInvadersScreensaver.saver
+
+2. macOS va a preguntar dónde instalarlo:
+   
+   Opciones:
+   - "Instalar para este usuario" (recomendado)
+   - "Instalar para todos los usuarios" (requiere contraseña)
+
+3. Seleccioná "Instalar para este usuario"
+   → Click "Instalar"
+
+⚠️  SI APARECE: "No se puede abrir porque proviene de un 
+    desarrollador no identificado"
+
+Solución:
+a) Abrí: Preferencias del Sistema (o Configuración del Sistema)
+b) Click en "Seguridad y Privacidad" (o "Privacidad y Seguridad")
+c) Pestaña "General"
+d) Abajo va a decir algo como:
+   "Se bloqueó el uso de SpaceInvadersScreensaver.saver porque..."
+e) Click en el botón "Abrir de todas formas"
+f) Confirmá con tu contraseña si te pide
+g) Intentá instalar de nuevo
+
+4. Una vez instalado, abrí:
+   Preferencias del Sistema → Salvapantallas
+   (o Configuración del Sistema → Protector de Pantalla)
+
+5. En la lista de screensavers, buscá:
+   "Space Invaders"
+
+6. Click en "Space Invaders"
+
+7. Vas a ver una preview del juego
+   → Deberías ver los aliens
+   → Deberías escuchar el sonido
+   → En la esquina inferior izquierda (muy discreto):
+     "dr pendejoloco" en verde
+
+8. Configurá el tiempo de espera (ej: 5 minutos)
+
+9. ¡LISTO! Tu screensaver está funcionando 👾
+
+═══════════════════════════════════════════════════════════════
+
+🆘 TROUBLESHOOTING - SOLUCIÓN DE PROBLEMAS
+═══════════════════════════════════════════════════════════════
+
+Problema: "No aparece Build macOS Screensaver en Actions"
+─────────────────────────────────────────────────────────────
+Causa: Falta .github/workflows/build.yml
+Solución: Volvé al Paso 4 y creá el archivo correctamente
+
+Problema: "La compilación falla (❌ rojo)"
+─────────────────────────────────────────────────────────────
+Causa: Puede ser varios motivos
+Solución:
+1. Click en el workflow fallido
+2. Leé el error en los logs
+3. Verificá que subiste TODOS los archivos
+4. Intentá "Re-run all jobs"
+5. Si persiste, verificá que el repo sea Public
+
+Problema: "No puedo descargar el artifact"
+─────────────────────────────────────────────────────────────
+Causa: La compilación falló
+Solución: Verificá que haya ✅ verde, no ❌ rojo
+
+Problema: "El screensaver no aparece en la lista"
+─────────────────────────────────────────────────────────────
+Causa: No se instaló correctamente
+Solución:
+1. Verificá que esté en: ~/Library/Screen Savers/
+2. Reiniciá Preferencias del Sistema
+3. Verificá que tu Mac tenga macOS 13.0+
+   (Menú Apple → Acerca de este Mac)
+
+Problema: "El screensaver se instala pero no funciona"
+─────────────────────────────────────────────────────────────
+Causa: Incompatibilidad de versión de macOS
+Solución:
+1. Verificá tu versión de macOS:
+   Menú Apple → Acerca de este Mac
+2. Este screensaver requiere macOS 13.0 (Ventura) o superior
+3. Si tenés macOS 12 o menor, necesitás actualizar
+
+═══════════════════════════════════════════════════════════════
+
+💡 TIPS Y CONSEJOS
+═══════════════════════════════════════════════════════════════
+
+✓ GitHub Actions te da 2000 minutos gratis por mes
+  → Podés compilar ~600 veces al mes
+
+✓ El .saver compilado es portable
+  → Podés compartirlo con amigos
+  → Funciona en cualquier Mac con macOS 13+
+
+✓ Es Universal Binary
+  → Funciona en Intel y Apple Silicon
+  → Una sola descarga para todos
+
+✓ Los Artifacts se guardan 90 días
+  → Podés descargar de nuevo si lo perdiste
+
+✓ Podés modificar el código
+  → Cambiar colores, velocidad, etc.
+  → Subir los cambios
+  → Compilar de nuevo
+
+✓ El crédito "dr pendejoloco" está en el código
+  → main.js línea ~313
+  → Muy discreto, verde retro, esquina inferior izquierda
+
+═══════════════════════════════════════════════════════════════
+
+📊 RESUMEN VISUAL DEL PROCESO
+═══════════════════════════════════════════════════════════════
+
+1. GitHub.com → Crear cuenta
+          ↓
+2. New repository → spaceinvaders-screensaver
+          ↓
+3. Upload files → Arrastrar TODOS los archivos
+          ↓
+4. Create file → .github/workflows/build.yml
+          ↓
+5. Actions → Enable → Run workflow
+          ↓
+6. Esperar 2-3 min ☕ → Ver ✅ verde
+          ↓
+7. Artifacts → Descargar ZIP
+          ↓
+8. Doble click .saver → Instalar
+          ↓
+9. Preferencias → Salvapantallas → Space Invaders
+          ↓
+10. ¡A JUGAR! 👾🎮
+
+═══════════════════════════════════════════════════════════════
+
+🎉 ¡FELICITACIONES!
+
+Acabás de compilar un screensaver nativo de macOS
+completamente online, sin instalar nada en tu disco.
+
+¡Disfrutá tu Space Invaders retro! 👾
+
+═══════════════════════════════════════════════════════════════
+
+by dr pendejoloco - 2025
+
+¿Problemas? Revisá:
+• COMO_CREAR_GITHUB_FOLDER.txt
+• README.md
+• Este archivo de nuevo
