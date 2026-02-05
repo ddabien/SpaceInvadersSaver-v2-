@@ -12,7 +12,7 @@ final class SpaceInvadersScreensaverView: ScreenSaverView, WKNavigationDelegate 
 
         let config = WKWebViewConfiguration()
 
-        // ✅ Intento de permitir autoplay sin gesto del usuario (audio)
+        // Permitir autoplay de audio sin gesto del usuario
         if #available(macOS 10.15, *) {
             config.mediaTypesRequiringUserActionForPlayback = []
         }
@@ -21,7 +21,7 @@ final class SpaceInvadersScreensaverView: ScreenSaverView, WKNavigationDelegate 
         webpagePrefs.allowsContentJavaScript = true
         config.defaultWebpagePreferences = webpagePrefs
 
-        // Para cargar HTML + assets locales dentro del .saver
+        // CRÍTICO: Permitir acceso a archivos locales
         config.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
         config.setValue(true, forKey: "allowUniversalAccessFromFileURLs")
 
@@ -41,22 +41,21 @@ final class SpaceInvadersScreensaverView: ScreenSaverView, WKNavigationDelegate 
     private func loadGame() {
         let bundle = Bundle(for: type(of: self))
 
+        // SOLUCIÓN: Usar loadFileURL en vez de loadHTMLString
         guard let htmlURL = bundle.url(forResource: "index", withExtension: "html") else {
-            NSLog("SpaceInvaders: No se encontró index.html. Bundle: \(bundle.bundlePath)")
+            NSLog("❌ SpaceInvaders: No se encontró index.html")
+            NSLog("   Bundle path: \(bundle.bundlePath)")
             return
         }
 
-        guard let resourcesURL = bundle.resourceURL else {
-            NSLog("SpaceInvaders: bundle.resourceURL es nil. Bundle: \(bundle.bundlePath)")
-            return
-        }
-
-        do {
-            let html = try String(contentsOf: htmlURL, encoding: .utf8)
-            webView.loadHTMLString(html, baseURL: resourcesURL)
-        } catch {
-            NSLog("SpaceInvaders: Error leyendo index.html: \(error)")
-        }
+        // Obtener el directorio Resources para acceso a assets/
+        let resourcesURL = htmlURL.deletingLastPathComponent()
+        
+        NSLog("✅ SpaceInvaders: Cargando HTML desde: \(htmlURL.path)")
+        NSLog("   Resources URL: \(resourcesURL.path)")
+        
+        // CLAVE: loadFileURL permite rutas relativas como "assets/Ship.gif"
+        webView.loadFileURL(htmlURL, allowingReadAccessTo: resourcesURL)
     }
 
     override func draw(_ rect: NSRect) {
@@ -71,20 +70,22 @@ final class SpaceInvadersScreensaverView: ScreenSaverView, WKNavigationDelegate 
 
     override func stopAnimation() {
         super.stopAnimation()
+        // Opcional: pausar el juego
         webView.evaluateJavaScript("window.location.reload()", completionHandler: nil)
     }
 
     override var hasConfigureSheet: Bool { false }
 
+    // WKNavigationDelegate para debugging
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        NSLog("SpaceInvaders: WebView didFinish")
+        NSLog("✅ SpaceInvaders: WebView cargado exitosamente")
     }
 
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
-        NSLog("SpaceInvaders: WebView didFail navigation: \(error)")
+        NSLog("❌ SpaceInvaders: Error en navegación: \(error.localizedDescription)")
     }
 
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
-        NSLog("SpaceInvaders: WebView didFail provisional: \(error)")
+        NSLog("❌ SpaceInvaders: Error provisional: \(error.localizedDescription)")
     }
 }
