@@ -15,7 +15,7 @@ final class SpaceInvadersScreensaverView: ScreenSaverView, WKNavigationDelegate 
         webpagePrefs.allowsContentJavaScript = true
         config.defaultWebpagePreferences = webpagePrefs
 
-        // Ayuda mucho cuando se carga HTML local con assets locales en .saver
+        // Para cargar HTML + assets locales dentro del .saver
         config.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
         config.setValue(true, forKey: "allowUniversalAccessFromFileURLs")
 
@@ -48,14 +48,13 @@ final class SpaceInvadersScreensaverView: ScreenSaverView, WKNavigationDelegate 
 
         do {
             let html = try String(contentsOf: htmlURL, encoding: .utf8)
-            // ✅ Clave: baseURL = Resources. Así 'assets/...' resuelve dentro de Contents/Resources/
+            // Clave: baseURL = Resources para que assets/... resuelva bien
             webView.loadHTMLString(html, baseURL: resourcesURL)
         } catch {
             NSLog("SpaceInvaders: Error leyendo index.html: \(error)")
         }
     }
 
-    // Fondo negro (por las dudas)
     override func draw(_ rect: NSRect) {
         NSColor.black.setFill()
         rect.fill()
@@ -68,7 +67,6 @@ final class SpaceInvadersScreensaverView: ScreenSaverView, WKNavigationDelegate 
 
     override func stopAnimation() {
         super.stopAnimation()
-        // No es obligatorio, pero ayuda a “resetear” JS cuando se apaga/enciende
         webView.evaluateJavaScript("window.location.reload()", completionHandler: nil)
     }
 
@@ -83,6 +81,4 @@ final class SpaceInvadersScreensaverView: ScreenSaverView, WKNavigationDelegate 
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
         NSLog("SpaceInvaders: WebView didFailProvisionalNavigation: \(error)")
     }
-}
-
 }
