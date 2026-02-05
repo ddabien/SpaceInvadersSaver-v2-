@@ -11,6 +11,12 @@ final class SpaceInvadersScreensaverView: ScreenSaverView, WKNavigationDelegate 
         super.init(frame: frame, isPreview: isPreview)
 
         let config = WKWebViewConfiguration()
+
+        // ✅ Intento de permitir autoplay sin gesto del usuario (audio)
+        if #available(macOS 10.15, *) {
+            config.mediaTypesRequiringUserActionForPlayback = []
+        }
+
         let webpagePrefs = WKWebpagePreferences()
         webpagePrefs.allowsContentJavaScript = true
         config.defaultWebpagePreferences = webpagePrefs
@@ -25,7 +31,6 @@ final class SpaceInvadersScreensaverView: ScreenSaverView, WKNavigationDelegate 
         webView.navigationDelegate = self
 
         addSubview(webView)
-
         loadGame()
     }
 
@@ -37,7 +42,7 @@ final class SpaceInvadersScreensaverView: ScreenSaverView, WKNavigationDelegate 
         let bundle = Bundle(for: type(of: self))
 
         guard let htmlURL = bundle.url(forResource: "index", withExtension: "html") else {
-            NSLog("SpaceInvaders: No se encontró index.html en Resources. Bundle: \(bundle.bundlePath)")
+            NSLog("SpaceInvaders: No se encontró index.html. Bundle: \(bundle.bundlePath)")
             return
         }
 
@@ -48,7 +53,6 @@ final class SpaceInvadersScreensaverView: ScreenSaverView, WKNavigationDelegate 
 
         do {
             let html = try String(contentsOf: htmlURL, encoding: .utf8)
-            // Clave: baseURL = Resources para que assets/... resuelva bien
             webView.loadHTMLString(html, baseURL: resourcesURL)
         } catch {
             NSLog("SpaceInvaders: Error leyendo index.html: \(error)")
@@ -72,13 +76,15 @@ final class SpaceInvadersScreensaverView: ScreenSaverView, WKNavigationDelegate 
 
     override var hasConfigureSheet: Bool { false }
 
-    // MARK: - WKNavigationDelegate (logs útiles)
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        NSLog("SpaceInvaders: WebView didFinish")
+    }
 
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
         NSLog("SpaceInvaders: WebView didFail navigation: \(error)")
     }
 
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
-        NSLog("SpaceInvaders: WebView didFailProvisionalNavigation: \(error)")
+        NSLog("SpaceInvaders: WebView didFail provisional: \(error)")
     }
 }
